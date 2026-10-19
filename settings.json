@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//c/Users/ZachRyan/OneDrive - Commit Consulting/Documents/MCPs/remote-mcp-server-authless-wd-wql-main/src/workday/**)",
+      "Read(//c/Users/ZachRyan/OneDrive - Commit Consulting/Documents/MCPs/remote-mcp-server-authless-wd-wql-main/**)"
+    ]
+  }
+}
