@@ -1,0 +1,56 @@
+/**
+ * For more details on how to configure Wrangler, refer to:
+ * https://developers.cloudflare.com/workers/wrangler/configuration/
+ */
+{
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "remote-mcp-server-fullauth-tool-demo",
+	"main": "src/index.ts",
+	"compatibility_date": "2026-09-08",
+	"compatibility_flags": ["nodejs_compat"],
+	// Full-fidelity logging, because the auth bugs this app hits are one-shot:
+	// a sign-in either works or it does not, and there is no second chance to
+	// catch it. Sampling at anything below 1 loses exactly the invocation you
+	// needed. "persist" is what makes logs queryable in the dashboard after the
+	// fact, rather than only live through `wrangler tail`.
+	//
+	// redact_query_string is false so /workday/callback?code=...&state=... is
+	// legible when diagnosing a failed correlation. That does mean authorization
+	// codes land in persisted logs — they are single-use and short-lived, but it
+	// is the reason to keep this a demo tenant.
+	"observability": {
+		"enabled": true,
+		"head_sampling_rate": 1,
+		"redact_query_string": false,
+		"logs": {
+			"enabled": true,
+			"head_sampling_rate": 1,
+			"invocation_logs": true,
+			"persist": true,
+		},
+		"traces": {
+			"enabled": true,
+			"head_sampling_rate": 1,
+			"persist": true,
+		},
+	},
+
+	// OAuth state (registered clients, grants, tokens) plus the manual /login token.
+	// "binding" MUST be OAUTH_KV — the OAuth library reads env.OAUTH_KV by that
+	// exact name. "id" is the same namespace as before; the label it was given in
+	// the dashboard ("workday-mcp") is cosmetic and appears nowhere in code.
+	"kv_namespaces": [
+		{
+			"binding": "OAUTH_KV",
+			"id": "c5045748a99f42239ee8e12dafa6f7f3",
+		},
+	],
+
+	// The client secret is NOT here — set it with:
+	//   npx wrangler secret put WORKDAY_CLIENT_SECRET
+	"vars": {
+		"WORKDAY_REGION_HOST": "us.agent.workday.com",
+		"WORKDAY_TENANT_ALIAS": "commitsrv_wcpdev1",
+		"WORKDAY_CLIENT_ID": "MWE5YzM5MjEtMzlhYS00OTE0LWIxMDEtMmFlYTdiZDBhZmFi",
+	},
+}

@@ -1,0 +1,28 @@
+{
+	"name": "remote-mcp-server-fullauth-tool-demo",
+	"version": "1.0.0",
+	"private": true,
+	"description": "Remote MCP server on Cloudflare Workers that authenticates users into Workday Agent Gateway and calls it with their own employee-as-self token.",
+	"type": "module",
+	"scripts": {
+		"dev": "wrangler dev",
+		"deploy": "wrangler deploy",
+		"typecheck": "tsc --noEmit",
+		"types": "wrangler types",
+		"lint": "oxlint",
+		"format": "oxfmt ."
+	},
+	"dependencies": {
+		"@cloudflare/workers-oauth-provider": "^0.10.3",
+		"@modelcontextprotocol/server": "^2.0.0",
+		"agents": "^0.22.0",
+		"zod": "^4.5.4"
+	},
+	"devDependencies": {
+		"@cloudflare/workers-types": "^5.20260908.1",
+		"oxfmt": "^0.6.0",
+		"oxlint": "^1.82.0",
+		"typescript": "^5.9.3",
+		"wrangler": "^4.130.0"
+	}
+}
